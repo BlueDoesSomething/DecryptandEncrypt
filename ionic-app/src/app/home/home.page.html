@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Encrypt / Decrypt App</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Cipher picker -->
+  <ion-segment [(ngModel)]="cipher">
+    <ion-segment-button value="caesar"><ion-label>Caesar</ion-label></ion-segment-button>
+    <ion-segment-button value="vigenere"><ion-label>Vigenère</ion-label></ion-segment-button>
+    <ion-segment-button value="aes"><ion-label>AES</ion-label></ion-segment-button>
+  </ion-segment>
+
+  <!-- Mode picker -->
+  <ion-segment [(ngModel)]="mode" class="ion-margin-top">
+    <ion-segment-button value="encrypt"><ion-label>Encrypt</ion-label></ion-segment-button>
+    <ion-segment-button value="decrypt"><ion-label>Decrypt</ion-label></ion-segment-button>
+  </ion-segment>
+
+  <!-- Caesar options -->
+  <ion-item *ngIf="cipher === 'caesar'" class="ion-margin-top">
+    <ion-label position="stacked">Shift (0-25)</ion-label>
+    <ion-input type="number" [(ngModel)]="shift" min="0" max="25"></ion-input>
+  </ion-item>
+
+  <!-- Vigenere options -->
+  <ion-item *ngIf="cipher === 'vigenere'" class="ion-margin-top">
+    <ion-label position="stacked">Keyword</ion-label>
+    <ion-input [(ngModel)]="keyword" placeholder="e.g. LEMON"></ion-input>
+  </ion-item>
+
+  <!-- AES options -->
+  <ion-item *ngIf="cipher === 'aes'" class="ion-margin-top">
+    <ion-label position="stacked">Password</ion-label>
+    <ion-input type="password" [(ngModel)]="password" placeholder="Enter password"></ion-input>
+  </ion-item>
+
+  <!-- Input -->
+  <ion-item class="ion-margin-top">
+    <ion-label position="stacked">{{ mode === 'encrypt' ? 'Plaintext' : 'Ciphertext' }}</ion-label>
+    <ion-textarea [(ngModel)]="inputText" rows="4" placeholder="Type text here..."></ion-textarea>
+  </ion-item>
+
+  <ion-button expand="block" class="ion-margin-top" (click)="run()">
+    {{ mode === 'encrypt' ? 'Encrypt' : 'Decrypt' }}
+  </ion-button>
+  <ion-button expand="block" fill="clear" (click)="clear()">Clear</ion-button>
+
+  <!-- Output -->
+  <ion-card *ngIf="outputText">
+    <ion-card-header><ion-card-title>Result</ion-card-title></ion-card-header>
+    <ion-card-content>
+      <p style="word-break: break-all;">{{ outputText }}</p>
+      <ion-button size="small" (click)="copy()">Copy</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-text color="danger" *ngIf="error"><p class="ion-padding">{{ error }}</p></ion-text>
+</ion-content>
